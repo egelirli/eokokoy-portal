@@ -1,0 +1,33 @@
+# ─── Backend ───────────────────────────────
+backend/build/
+backend/.gradle/
+backend/*.jar
+backend/*.war
+backend/.env
+backend/src/main/resources/application-prod.yml
+backend/src/main/resources/application-local.yml
+
+# ─── Frontend ──────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# ─── IDE ───────────────────────────────────
+.idea/
+*.iml
+.vscode/settings.json
+.vscode/launch.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ─── OS ────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Logs ──────────────────────────────────
+*.log
+logs/
