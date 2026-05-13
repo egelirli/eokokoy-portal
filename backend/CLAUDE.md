@@ -9,7 +9,7 @@ ORM:        Spring Data JPA + Hibernate
 Migration:  Flyway
 Depolama:   MinIO  (self-hosted Docker)
 E-posta:    Spring Mail + Thymeleaf
-Build:      Maven
+Build:      Gradle (Kotlin DSL)
 API:        REST — /api/v1/ prefix
 ```
 
