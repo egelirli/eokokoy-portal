@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PropertyRepository extends JpaRepository<Property, UUID> {
 
-    Optional<Property> findByUnitNumber(String unitNumber);
+    Optional<Property> findByNumber(Integer number);
 
-    boolean existsByUnitNumber(String unitNumber);
+    boolean existsByNumber(Integer number);
 }

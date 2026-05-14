@@ -10,7 +10,7 @@ public record VerifyInvitationResponse(
         String roleCode,
         String roleDisplayName,
         UUID propertyId,
-        String propertyUnitNumber,
+        Integer propertyNumber,
         Instant expiresAt
 ) {
     public static VerifyInvitationResponse from(Invitation inv) {
@@ -19,7 +19,7 @@ public record VerifyInvitationResponse(
                 inv.getRole().getCode(),
                 inv.getRole().getDisplayName(),
                 inv.getProperty() != null ? inv.getProperty().getId() : null,
-                inv.getProperty() != null ? inv.getProperty().getUnitNumber() : null,
+                inv.getProperty() != null ? inv.getProperty().getNumber() : null,
                 inv.getExpiresAt()
         );
     }
