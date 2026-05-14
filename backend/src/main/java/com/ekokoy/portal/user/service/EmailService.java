@@ -118,6 +118,35 @@ public class EmailService {
         sendSimpleEmail(toEmail, subject, body);
     }
 
+    /** Aidat hatırlatma e-postası gönderir. */
+    @Async
+    public void sendDueReminderEmail(String toEmail, String firstName, int propertyNo,
+                                     int year, Integer month, java.math.BigDecimal amount,
+                                     java.math.BigDecimal paidAmount, java.time.LocalDate dueDate,
+                                     String reminderLabel) {
+        String period = month != null ? year + "/" + month : String.valueOf(year);
+        java.math.BigDecimal remaining = amount.subtract(paidAmount);
+        String subject = "Ekoköy Portalı — Aidat Hatırlatması";
+        String text = String.format("""
+                Sayın %s,
+
+                Konut No %d için %s aidat borcunuz bulunmaktadır.
+
+                Dönem:        %s
+                Toplam tutar: %.2f TL
+                Ödenen:       %.2f TL
+                Kalan:        %.2f TL
+                Son ödeme:    %s
+
+                Bu borç %s aidatlarınız arasında yer almaktadır.
+
+                Saygılarımızla,
+                Ekoköy Yönetim Kurulu
+                """, firstName, propertyNo, reminderLabel,
+                period, amount, paidAmount, remaining, dueDate, reminderLabel);
+        sendSimpleEmail(toEmail, subject, text);
+    }
+
     /** Acil (urgent) duyuru bildirimi gönderir. */
     @Async
     public void sendAnnouncementEmail(String toEmail, String firstName, String title, String body) {
