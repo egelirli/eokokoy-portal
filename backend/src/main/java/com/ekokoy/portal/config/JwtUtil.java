@@ -24,13 +24,15 @@ public class JwtUtil {
     }
 
     /**
-     * JWT access token üretir. Payload'a roles, permissions ve property_ids eklenir.
+     * JWT access token üretir. Payload'a email, roles, permissions ve property_ids eklenir.
      */
-    public String generateAccessToken(UUID userId, List<String> roles, List<String> permissions, List<UUID> propertyIds) {
+    public String generateAccessToken(UUID userId, String email, List<String> roles,
+                                      List<String> permissions, List<UUID> propertyIds) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + props.getAccessExpiration() * 1000L);
         return Jwts.builder()
                 .subject(userId.toString())
+                .claim("email", email)
                 .claim("roles", roles)
                 .claim("permissions", permissions)
                 .claim("property_ids", propertyIds.stream().map(UUID::toString).toList())
