@@ -112,6 +112,25 @@ Rate limiting: Bucket4j
 "CLAUDE.md ve specs/SPEC-05.md oku. Zamanlanmış yayın özelliğini ekle."
 ```
 
+## Spec İmplementasyon Sonrası Kod Gözden Geçirmesi — ZORUNLU
+
+Her spec implementasyonu tamamlandıktan sonra `/review` komutu ile code-review agent çalıştırılmalıdır.
+
+**Adımlar:**
+1. Spec implementasyonunu tamamla ve testlerin geçtiğini doğrula (`./gradlew test`)
+2. Değişiklikleri commit et
+3. `/review` komutunu çalıştırarak code-review agent'ı başlat
+4. Agent'ın bulduğu kritik sorunları düzelt
+5. Düzeltmeleri yeni bir commit ile kaydet
+
+**Review agent şunları kontrol eder:**
+- Mimari katman kurallarına uyum (Controller/Service/Repository ayrımı)
+- `@PreAuthorize` ile güvenlik anotasyonlarının varlığı
+- DTO kullanımı — entity'nin controller'a sızmaması
+- Soft delete, UUID, UTC tarih kuralları
+- Test kapsamı (unit + integration)
+- Flyway migration doğruluğu
+
 ## Ortam Değişkenleri
 ```bash
 DB_HOST, DB_PORT=5432, DB_NAME=ekokoy, DB_USER, DB_PASSWORD
