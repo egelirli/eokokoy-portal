@@ -118,6 +118,25 @@ public class EmailService {
         sendSimpleEmail(toEmail, subject, body);
     }
 
+    /** Acil (urgent) duyuru bildirimi gönderir. */
+    @Async
+    public void sendAnnouncementEmail(String toEmail, String firstName, String title, String body) {
+        String subject = "Ekoköy Portalı — Acil Duyuru: " + title;
+        String text = String.format("""
+                Sayın %s,
+
+                Acil bir duyuru yayınlandı:
+
+                %s
+
+                %s
+
+                Saygılarımızla,
+                Ekoköy Yönetim Kurulu
+                """, firstName, title, body);
+        sendSimpleEmail(toEmail, subject, text);
+    }
+
     private void sendSimpleEmail(String to, String subject, String body) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
