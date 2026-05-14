@@ -97,6 +97,27 @@ public class EmailService {
         sendSimpleEmail(toEmail, subject, body);
     }
 
+    /** Şifre sıfırlama bağlantısı e-postası gönderir. rawToken URL'e eklenmek üzere ham token'dır. */
+    @Async
+    public void sendPasswordResetEmail(String toEmail, String firstName, String rawToken) {
+        String subject = "Ekoköy Portalı — Şifre Sıfırlama";
+        String link = frontendUrl + "/reset-password?token=" + rawToken;
+        String body = String.format("""
+                Sayın %s,
+
+                Şifre sıfırlama talebiniz alınmıştır.
+
+                Yeni şifrenizi belirlemek için aşağıdaki bağlantıya tıklayınız (1 saat geçerlidir):
+                %s
+
+                Bu işlemi siz yapmadıysanız bu e-postayı dikkate almayınız.
+
+                Saygılarımızla,
+                Ekoköy Yönetim Kurulu
+                """, firstName, link);
+        sendSimpleEmail(toEmail, subject, body);
+    }
+
     private void sendSimpleEmail(String to, String subject, String body) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

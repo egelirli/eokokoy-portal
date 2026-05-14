@@ -52,7 +52,7 @@ class RoleControllerIntegrationTest {
 
         List<String> roles = List.of("SUPER_ADMIN");
         List<String> permissions = List.of("USER_ASSIGN_ROLE", "SYSTEM_ADMIN");
-        superAdminToken = jwtUtil.generateAccessToken(superAdminUserId, roles, permissions, List.of());
+        superAdminToken = jwtUtil.generateAccessToken(superAdminUserId, "admin@ekokoy.com", roles, permissions, List.of());
     }
 
     @Test

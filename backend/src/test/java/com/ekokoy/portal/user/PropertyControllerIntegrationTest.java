@@ -54,6 +54,7 @@ class PropertyControllerIntegrationTest {
 
         adminToken = jwtUtil.generateAccessToken(
                 adminUserId,
+                "admin@ekokoy.com",
                 List.of("SUPER_ADMIN"),
                 List.of("PROPERTY_VIEW", "PROPERTY_MANAGE"),
                 List.of()
@@ -246,6 +247,7 @@ class PropertyControllerIntegrationTest {
     void should_return_my_properties_for_authenticated_user() throws Exception {
         String userToken = jwtUtil.generateAccessToken(
                 testUserId,
+                "user@ekokoy.com",
                 List.of("EV_SAHIBI"),
                 List.of(),
                 List.of(testPropertyId)
