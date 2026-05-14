@@ -66,8 +66,7 @@ public class ApplicationService {
      * Silinmiş kullanıcılar hariç tutulur.
      */
     public List<ApplicationResponse> listApplications() {
-        return userRepository.findAll().stream()
-                .filter(u -> !u.isDeleted())
+        return userRepository.findAllByIsDeletedFalse().stream()
                 .map(ApplicationResponse::from)
                 .toList();
     }

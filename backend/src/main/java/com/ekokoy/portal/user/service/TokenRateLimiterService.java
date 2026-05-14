@@ -10,23 +10,35 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Token doğrulama brute force koruması.
- * Her token hash için bağımsız bir bucket tutar: 5 deneme / 15 dakika.
+ * Yalnızca başarısız (token bulunamayan) denemeler sayılır: 5 başarısız/15 dakika.
  */
 @Service
 public class TokenRateLimiterService {
 
     private final ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-    /** Token denemesine izin var mı kontrol eder; yoksa 429 fırlatır. */
-    public void checkAndConsume(String tokenHash) {
-        Bucket bucket = buckets.computeIfAbsent(tokenHash, k -> newBucket());
-        if (!bucket.tryConsume(1)) {
+    /**
+     * Bucket doluysa 429 fırlatır; dolmamışsa geçirir (token tüketmez).
+     * Doğrulama girişiminden önce çağrılır.
+     */
+    public void assertNotBlocked(String tokenHash) {
+        Bucket bucket = buckets.get(tokenHash);
+        if (bucket != null && bucket.getAvailableTokens() == 0) {
             throw new EkokoyException(
                     "TOKEN_RATE_LIMIT",
                     "Çok fazla başarısız deneme. 15 dakika sonra tekrar deneyiniz.",
                     429
             );
         }
+    }
+
+    /**
+     * Başarısız denemede çağrılır; bucket'tan 1 token tüketir.
+     * 5. başarısız denemeden sonra bucket boşalır ve assertNotBlocked 429 döner.
+     */
+    public void recordFailedAttempt(String tokenHash) {
+        Bucket bucket = buckets.computeIfAbsent(tokenHash, k -> newBucket());
+        bucket.tryConsume(1);
     }
 
     private Bucket newBucket() {

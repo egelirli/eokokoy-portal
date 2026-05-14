@@ -130,7 +130,7 @@ class InvitationServiceTest {
                 Instant.now().minus(1, ChronoUnit.HOURS));
 
         // rateLimiter izin verir
-        doNothing().when(rateLimiterService).checkAndConsume(anyString());
+        doNothing().when(rateLimiterService).assertNotBlocked(anyString());
         when(invitationRepository.findByTokenWithRole(anyString())).thenReturn(Optional.of(expired));
 
         assertThatThrownBy(() -> invitationService.verifyToken("somerawtoken"))
@@ -144,7 +144,7 @@ class InvitationServiceTest {
         Invitation used = makeInvitation("user@ekokoy.com", role, true,
                 Instant.now().plus(24, ChronoUnit.HOURS));
 
-        doNothing().when(rateLimiterService).checkAndConsume(anyString());
+        doNothing().when(rateLimiterService).assertNotBlocked(anyString());
         when(invitationRepository.findByTokenWithRole(anyString())).thenReturn(Optional.of(used));
 
         assertThatThrownBy(() -> invitationService.verifyToken("somerawtoken"))
@@ -158,7 +158,7 @@ class InvitationServiceTest {
         Invitation inv = makeInvitation("user@ekokoy.com", role, false,
                 Instant.now().plus(24, ChronoUnit.HOURS));
 
-        doNothing().when(rateLimiterService).checkAndConsume(anyString());
+        doNothing().when(rateLimiterService).assertNotBlocked(anyString());
         when(invitationRepository.findByTokenWithRole(anyString())).thenReturn(Optional.of(inv));
         when(userRepository.existsByEmailAndIsDeletedFalse("user@ekokoy.com")).thenReturn(false);
         when(passwordEncoder.encode("Sifre123!")).thenReturn("$hashed");
@@ -185,7 +185,7 @@ class InvitationServiceTest {
         Invitation inv = makeInvitation("user@ekokoy.com", role, false,
                 Instant.now().plus(24, ChronoUnit.HOURS));
 
-        doNothing().when(rateLimiterService).checkAndConsume(anyString());
+        doNothing().when(rateLimiterService).assertNotBlocked(anyString());
         when(invitationRepository.findByTokenWithRole(anyString())).thenReturn(Optional.of(inv));
         when(userRepository.existsByEmailAndIsDeletedFalse("user@ekokoy.com")).thenReturn(true);
 
@@ -198,11 +198,23 @@ class InvitationServiceTest {
     @Test
     void should_throw_when_rate_limit_exceeded() {
         doThrow(new EkokoyException("TOKEN_RATE_LIMIT", "Çok fazla başarısız deneme. 15 dakika sonra tekrar deneyiniz.", 429))
-                .when(rateLimiterService).checkAndConsume(anyString());
+                .when(rateLimiterService).assertNotBlocked(anyString());
 
         assertThatThrownBy(() -> invitationService.verifyToken("anytoken"))
                 .isInstanceOf(EkokoyException.class)
                 .extracting(e -> ((EkokoyException) e).getCode())
                 .isEqualTo("TOKEN_RATE_LIMIT");
+    }
+
+    @Test
+    void should_record_failed_attempt_when_token_not_found() {
+        doNothing().when(rateLimiterService).assertNotBlocked(anyString());
+        when(invitationRepository.findByTokenWithRole(anyString())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> invitationService.verifyToken("wrongtoken"))
+                .isInstanceOf(EkokoyException.class)
+                .hasMessageContaining("Geçersiz");
+
+        verify(rateLimiterService).recordFailedAttempt(anyString());
     }
 }

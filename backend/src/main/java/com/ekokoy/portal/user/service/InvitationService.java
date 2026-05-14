@@ -110,10 +110,13 @@ public class InvitationService {
      */
     public VerifyInvitationResponse verifyToken(String rawToken) {
         String tokenHash = sha256(rawToken);
-        rateLimiterService.checkAndConsume(tokenHash);
+        rateLimiterService.assertNotBlocked(tokenHash);
 
         Invitation invitation = invitationRepository.findByTokenWithRole(tokenHash)
-                .orElseThrow(() -> new EkokoyException("INVALID_TOKEN", "Geçersiz veya bulunamayan davet bağlantısı.", 404));
+                .orElseThrow(() -> {
+                    rateLimiterService.recordFailedAttempt(tokenHash);
+                    return new EkokoyException("INVALID_TOKEN", "Geçersiz veya bulunamayan davet bağlantısı.", 404);
+                });
 
         if (invitation.isUsed()) {
             throw new EkokoyException("TOKEN_ALREADY_USED", "Bu davet bağlantısı daha önce kullanılmıştır.", 410);
@@ -131,10 +134,13 @@ public class InvitationService {
     @Transactional
     public ApplicationResponse completeInvitation(CompleteInvitationRequest request) {
         String tokenHash = sha256(request.token());
-        rateLimiterService.checkAndConsume(tokenHash);
+        rateLimiterService.assertNotBlocked(tokenHash);
 
         Invitation invitation = invitationRepository.findByTokenWithRole(tokenHash)
-                .orElseThrow(() -> new EkokoyException("INVALID_TOKEN", "Geçersiz davet bağlantısı.", 404));
+                .orElseThrow(() -> {
+                    rateLimiterService.recordFailedAttempt(tokenHash);
+                    return new EkokoyException("INVALID_TOKEN", "Geçersiz davet bağlantısı.", 404);
+                });
 
         if (invitation.isUsed()) {
             throw new EkokoyException("TOKEN_ALREADY_USED", "Bu davet bağlantısı daha önce kullanılmıştır.", 410);
