@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -17,17 +18,21 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "unit_number", nullable = false, unique = true, length = 20)
-    private String unitNumber;
+    @Column(nullable = false, unique = true)
+    private Integer number;
 
-    @Column(length = 20)
-    private String block;
+    @Column(length = 50)
+    private String type;
 
-    @Column
-    private Integer floor;
+    @Column(name = "area_m2", precision = 6, scale = 2)
+    private BigDecimal areaM2;
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive = true;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private PropertyStatus status = PropertyStatus.bos;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -38,16 +43,18 @@ public class Property {
     private Instant updatedAt;
 
     public UUID getId() { return id; }
-    public String getUnitNumber() { return unitNumber; }
-    public String getBlock() { return block; }
-    public Integer getFloor() { return floor; }
-    public boolean isActive() { return isActive; }
+    public Integer getNumber() { return number; }
+    public String getType() { return type; }
+    public BigDecimal getAreaM2() { return areaM2; }
+    public String getDescription() { return description; }
+    public PropertyStatus getStatus() { return status; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
 
     public void setId(UUID id) { this.id = id; }
-    public void setUnitNumber(String unitNumber) { this.unitNumber = unitNumber; }
-    public void setBlock(String block) { this.block = block; }
-    public void setFloor(Integer floor) { this.floor = floor; }
-    public void setActive(boolean active) { isActive = active; }
+    public void setNumber(Integer number) { this.number = number; }
+    public void setType(String type) { this.type = type; }
+    public void setAreaM2(BigDecimal areaM2) { this.areaM2 = areaM2; }
+    public void setDescription(String description) { this.description = description; }
+    public void setStatus(PropertyStatus status) { this.status = status; }
 }
