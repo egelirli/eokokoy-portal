@@ -39,6 +39,8 @@ dependencies {
 	// TwelveMonkeys — WebP + JPEG ImageIO eklentileri (SPEC-06)
 	runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.12.0")
 	runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.12.0")
+	// Apache POI — Excel (.xlsx) desteği (SPEC-12)
+	implementation("org.apache.poi:poi-ooxml:5.3.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-mail-test")
