@@ -25,6 +25,7 @@ import { PollDetailPage } from '@/features/polls/PollDetailPage';
 
 import { UsersPage } from '@/features/admin/users/UsersPage';
 import { PropertiesPage } from '@/features/admin/properties/PropertiesPage';
+import { InvitationsPage } from '@/features/admin/invitations/InvitationsPage';
 
 import {
   ProfilePage,
@@ -38,7 +39,6 @@ import {
   AdminTasksPage,
   AdminDuesImportPage,
   AdminPollNewPage,
-  AdminInvitePage,
   AdminDashboardPage,
 } from '@/features/_placeholders';
 
@@ -155,7 +155,15 @@ export default function App() {
             path="/admin/invite"
             element={
               <ProtectedRoute adminOnly>
-                <AdminInvitePage />
+                <InvitationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/invitations"
+            element={
+              <ProtectedRoute adminOnly>
+                <InvitationsPage />
               </ProtectedRoute>
             }
           />

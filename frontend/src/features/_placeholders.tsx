@@ -32,4 +32,3 @@ export function AdminAnnouncementNewPage() { return <ComingSoon title="Admin —
 export function AdminTasksPage() { return <ComingSoon title="Admin — Tüm Talepler" />; }
 export function AdminDuesImportPage() { return <ComingSoon title="Admin — Aidat İçe Aktar" />; }
 export function AdminPollNewPage() { return <ComingSoon title="Admin — Yeni Anket" />; }
-export function AdminInvitePage() { return <ComingSoon title="Admin — Davetiye" />; }
