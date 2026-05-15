@@ -7,7 +7,7 @@ export interface AdminUser {
   email: string;
   phone: string | null;
   status: UserStatus;
-  roles: string[];
+  roles: string[] | null;
   avatarUrl: string | null;
   createdAt: string;
   lastLoginAt: string | null;

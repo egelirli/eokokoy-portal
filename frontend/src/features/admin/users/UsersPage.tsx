@@ -57,7 +57,7 @@ function UserRow({ user }: { user: AdminUser }) {
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">
-        {user.roles.map(r => (
+        {(user.roles ?? []).map(r => (
           <span key={r} className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
             {ROLE_SHORT[r] ?? r}
           </span>

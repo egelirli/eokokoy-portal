@@ -26,7 +26,7 @@ const RELATION_LABEL: Record<string, string> = {
 type StatusFilter = 'all' | PropertyStatus;
 
 function PropertyCard({ property }: { property: AdminProperty }) {
-  const activeResidents = property.residents.filter(r => !r.endDate);
+  const activeResidents = (property.residents ?? []).filter(r => !r.endDate);
 
   return (
     <div className="rounded-xl border border-border bg-background-card p-4 hover:border-primary/30 transition-colors">

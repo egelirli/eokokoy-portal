@@ -18,7 +18,7 @@ export interface AdminProperty {
   areaM2: number | null;
   status: PropertyStatus;
   description: string | null;
-  residents: PropertyResident[];
+  residents: PropertyResident[] | null;
   createdAt: string;
   updatedAt: string;
 }
