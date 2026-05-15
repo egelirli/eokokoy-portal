@@ -1,22 +1,32 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/common/Layout';
 import { ProtectedRoute } from '@/components/common/ProtectedRoute';
-import { LoginPage } from '@/features/auth/LoginPage';
+
 import { HomePage } from '@/features/home/HomePage';
+import { LoginPage } from '@/features/auth/LoginPage';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
+
+import { AnnouncementsPage } from '@/features/announcements/AnnouncementsPage';
+import { AnnouncementDetailPage } from '@/features/announcements/AnnouncementDetailPage';
+
+import { TasksPage } from '@/features/tasks/TasksPage';
+import { TaskDetailPage } from '@/features/tasks/TaskDetailPage';
+
+import { MessagesPage } from '@/features/messages/MessagesPage';
+
+import { ForumPage } from '@/features/forum/ForumPage';
+
+import { DocumentsPage } from '@/features/documents/DocumentsPage';
+
+import { DuesPage } from '@/features/dues/DuesPage';
+
+import { PollsPage } from '@/features/polls/PollsPage';
+import { PollDetailPage } from '@/features/polls/PollDetailPage';
+
+import { UsersPage } from '@/features/admin/users/UsersPage';
+import { PropertiesPage } from '@/features/admin/properties/PropertiesPage';
+
 import {
-  AnnouncementsPage,
-  AnnouncementDetailPage,
-  TasksPage,
-  TaskDetailPage,
-  MessagesPage,
-  ForumPage,
-  ForumCategoryPage,
-  ForumTopicPage,
-  DocumentsPage,
-  DuesPage,
-  PollsPage,
-  PollDetailPage,
   ProfilePage,
   SettingsPage,
   NotificationsPage,
@@ -24,8 +34,6 @@ import {
   ResetPasswordPage,
   ApplyPage,
   NotFoundPage,
-  AdminUsersPage,
-  AdminPropertiesPage,
   AdminAnnouncementNewPage,
   AdminTasksPage,
   AdminDuesImportPage,
@@ -64,10 +72,11 @@ export default function App() {
           <Route path="/messages" element={<MessagesPage />} />
 
           <Route path="/forum" element={<ForumPage />} />
-          <Route path="/forum/:categorySlug" element={<ForumCategoryPage />} />
-          <Route path="/forum/topics/:id" element={<ForumTopicPage />} />
+          <Route path="/forum/:categorySlug" element={<ForumPage />} />
+          <Route path="/forum/topics/:id" element={<ForumPage />} />
 
           <Route path="/documents" element={<DocumentsPage />} />
+
           <Route path="/dues" element={<DuesPage />} />
 
           <Route path="/polls" element={<PollsPage />} />
@@ -82,7 +91,7 @@ export default function App() {
             path="/admin"
             element={
               <ProtectedRoute adminOnly>
-                <DashboardPage />
+                <AdminDashboardPage />
               </ProtectedRoute>
             }
           />
@@ -98,7 +107,7 @@ export default function App() {
             path="/admin/users"
             element={
               <ProtectedRoute adminOnly>
-                <AdminUsersPage />
+                <UsersPage />
               </ProtectedRoute>
             }
           />
@@ -106,7 +115,7 @@ export default function App() {
             path="/admin/properties"
             element={
               <ProtectedRoute adminOnly>
-                <AdminPropertiesPage />
+                <PropertiesPage />
               </ProtectedRoute>
             }
           />
